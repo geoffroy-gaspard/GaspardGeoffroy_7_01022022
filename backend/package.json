@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "back-end",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server/server.js -w server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "fastest-validator": "^1.12.0",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.16.0"
+  }
+}

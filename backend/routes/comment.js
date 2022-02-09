@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post("/", commentController.save);
+router.post("/", authMiddleware.auth, commentController.save);
 router.get("/", commentController.index);
 router.get("/:id", commentController.show);
 router.patch("/:id", authMiddleware.auth, commentController.update);

@@ -11,8 +11,9 @@ export default {
     data () {
             return {
                 comments: {
-                    content: '',
-                    post_id: '',
+                    content: null,
+                    postId: null,
+                    user_id: null
                 },
             }
         },

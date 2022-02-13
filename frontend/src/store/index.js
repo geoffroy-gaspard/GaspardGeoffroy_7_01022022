@@ -34,7 +34,7 @@ const store = new Vuex.Store({
         userInfos: {
             first_name: '',
             last_name: '',
-            email: '',
+            email: ''
           },
     },
     mutations: {
@@ -47,7 +47,10 @@ const store = new Vuex.Store({
             state.user = user;
         },
         userInfos: function (state, userInfos) {
+            instance.defaults.headers.common['Authorization'] = user.token;
+            localStorage.setItem('userInfos', JSON.stringify(userInfos));
             state.userInfos = userInfos;
+            console.log(userInfos)
           },
         logout: function(state) {
             state.user = {
@@ -91,7 +94,7 @@ const store = new Vuex.Store({
         getUserInfos: ({commit}) => {
             instance.get('/users/me')
             .then(function (response) {
-                commit('userInfos', response.userInfos);
+                commit('userInfos', response.data.user);
             })
             .catch(function () {
             });

@@ -75,7 +75,10 @@ function login(req, res) {
                     }, process.env.DB_TOKEN, function(err, token){
                         res.status(200).json({
                             message: "Authentication successful!",
-                            token: token
+                            token: token,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            userId: user.id
                         });
                     });
                 }else{

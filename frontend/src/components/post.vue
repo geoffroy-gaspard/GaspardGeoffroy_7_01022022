@@ -5,24 +5,20 @@
             <div class="attachment card-body"><img v-if="posts.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + posts.attachment" alt="post image"></div>
             <p v-if="posts.content" class="post_card_content card-text">{{ posts.content }}</p>
             <div class="form-row">
-            <comment>
-                <template v-slot:text>
+                <div>
                     <div class="form-group">
                         <textarea name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
                     </div>
-                </template>
-            <template v-slot:like>
+                </div>
                 <div class="card-footer comment_section_like">
                 <div class="text-muted">Créé le {{ posts.createdAt }}</div>
                 <button @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
                 <p class="post_card_content">0 likes</p>
                 <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
                 </div>
-                <div :key="index" v-for="(Allcomments, index) in Allcomments">
-                <p class="post_card_content" v-if="posts.id == Allcomments.post_id">{{ Allcomments.content }}<br> posté le {{ Allcomments.createdAt }}</p>
+                <div :key="index" v-for="(comments, index) in comments" class="post_card_content">
+                <p class="post_card_content" v-if="posts.id == comments.post_id">{{ comments.content }}<br> posté le {{ comments.createdAt }}</p>
             </div>
-            </template>
-            </comment>
             <div>
             <button v-if="posts == null" class="btn btn-outline-primary">Publier</button>
             </div>
@@ -33,26 +29,23 @@
 
 <script>
     import axios from 'axios';
-    import comment from '@/components/comment.vue'
     export default {
         name: 'post',
-        components: {
-            comment,
-        },
         data() {
             return {
                 posts: {
                     title: null,
                     content: null,
                     attachment: null,
-                },
-                Allcomments: {
-                    content: null,
+                    id: null
                 },
                 comments: {
-                    content: null,
-                    user_id: null,
-                    postId: null
+                    content: null
+                },
+                user: {
+                    first_name: null,
+                    last_name: null,
+                    userId: null
                 },
             }
         },
@@ -62,14 +55,21 @@
                 .then((res) => {
                     this.posts = res.data;
                     console.log(this.posts);
+
                 });
+            axios
+                .get("http://localhost:3000/users/me")
+                .then((res) => {
+                    this.users = res.data;
+                    console.log(this.users);
+                })
         },
         mounted: function() {  
             axios
                 .get('http://localhost:3000/comments')
                 .then((res) => {
-                this.Allcomments = res.data;
-                console.log(this.Allcomments);
+                this.comments = res.data;
+                console.log(this.comments);
             });
         },
         methods: {
@@ -77,10 +77,13 @@
                 axios
                 .post('http://localhost:3000/comments', this.comments, {
                     params: {
+                        user_id: this.user.id,
+                        postId: this.posts.id,
+                        content: this.content
                     }
                 })
                 .then((result) => {
-                    console.warn(result)
+                    console.log(result)
                 })
             }
         }

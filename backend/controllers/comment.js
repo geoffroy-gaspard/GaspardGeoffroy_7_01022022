@@ -9,8 +9,7 @@ function save(req, res) {
     }
 
     const schema = {
-        content: {type: "string", optional: false, max: "500"},
-        post_id: {type: "number", optional: false}
+        content: {type: "string", optional: false, max: "500"}
     }
 
     const v = new Validator();
@@ -87,7 +86,7 @@ function update(req, res){
         content: req.body.content
     }
 
-    const user_id = req.userData.id;;
+    const user_id = req.userData.id;
 
     const schema = {
         content: {type: "string", optional: false, max: "500"},

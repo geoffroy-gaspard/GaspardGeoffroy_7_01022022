@@ -56,7 +56,7 @@ import { mapState } from 'vuex';
             }
         },
         mounted: function () {
-            if (this.$store.state.user.userId != -1) {
+            if (this.$store.state.user.userId !== -1) {
                 this.$router.push('/profile');
                 return ;
             }

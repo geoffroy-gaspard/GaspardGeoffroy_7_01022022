@@ -18,7 +18,7 @@ if (!user) {
         } else {
             try {
                 user = JSON.parse(user);
-                instance.defaults.headers.common['Authorization'] = user.token;
+                instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
                 } catch (ex) {
                     user = {
                         userId: -1,
@@ -42,16 +42,10 @@ const store = new Vuex.Store({
             state.status = status;
         },
         logUser: function(state, user) {
-            instance.defaults.headers.common['Authorization'] = user.token;
+            instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
             localStorage.setItem('user', JSON.stringify(user));
             state.user = user;
         },
-        userInfos: function (state, userInfos) {
-            instance.defaults.headers.common['Authorization'] = user.token;
-            localStorage.setItem('userInfos', JSON.stringify(userInfos));
-            state.userInfos = userInfos;
-            console.log(userInfos)
-          },
         logout: function(state) {
             state.user = {
                 userId: -1,
@@ -92,9 +86,9 @@ const store = new Vuex.Store({
             });         
         },
         getUserInfos: ({commit}) => {
-            instance.get('/users/me')
+            instance.get(`/users/me/${user.user.id}`)
             .then(function (response) {
-                commit('userInfos', response.data.user);
+                commit('user', response.data.user);
             })
             .catch(function () {
             });

@@ -5,11 +5,9 @@
             <div class="attachment card-body"><img v-if="posts.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + posts.attachment" alt="post image"></div>
             <p v-if="posts.content" class="post_card_content card-text">{{ posts.content }}</p>
             <div class="form-row">
-                <div>
                     <div class="form-group">
                         <textarea name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
                     </div>
-                </div>
                 <div class="card-footer comment_section_like">
                 <div class="text-muted">Créé le {{ posts.createdAt }}</div>
                 <button @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>

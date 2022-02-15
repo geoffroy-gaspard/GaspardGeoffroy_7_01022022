@@ -25,7 +25,7 @@ export default {
             this.$router.push('/');
             return;
         }
-        this.$store.dispatch('getUserInfos');
+        this.$store.dispatch('userInfos');
     },
     computed: {
         ...mapState({ user: 'userInfos' })

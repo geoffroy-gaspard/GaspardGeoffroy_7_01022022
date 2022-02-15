@@ -69,16 +69,14 @@ function login(req, res) {
         }else{
             bcrypt.compare(req.body.password, user.password, function(err, result) {
                 if(result) {
-                    const token = jwt.sign({
-                        email: user.email,
-                        userId: user.id
-                    }, process.env.DB_TOKEN, function(err, token){
+                    const token = jwt.sign(
+                        { userId: user.id },
+                        process.env.DB_TOKEN,
+                        { expiresIn: '24h' }, function(err, token){
                         res.status(200).json({
                             message: "Authentication successful!",
                             token: token,
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            userId: user.id
+                            user: user
                         });
                     });
                 }else{
@@ -96,11 +94,7 @@ function login(req, res) {
 }
 
 function userInfos (req, res) {
-    const id = utils.getUserId(req.headers.authorization);
-    models.User.findOne({
-        attributes: ['first_name','last_name', 'email'],
-        where: { id: id }
-    })
+    models.User.findOne({ where: { id: req.params.id }})
         .then(user => res.status(200).json(user))
         .catch(error => res.status(500).json(error))
 };

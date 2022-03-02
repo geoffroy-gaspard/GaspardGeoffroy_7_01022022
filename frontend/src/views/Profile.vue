@@ -3,7 +3,7 @@
         <headerBar msg="Accueil"/>
         <h2 class="card_title">Espace Perso</h2>
         <p class="card_subtitle">ma page</p>
-        <p>{{ user.first_name }} {{ user.last_name }} {{ user.email }}</p>
+        <p>{{ $store.state.user.infos.first_name }} {{ $store.state.user.infos.last_name }} {{ $store.state.user.infos.email }}</p>
         <div class="form-row">
             <button @click="logout()" class="btn btn-outline-secondary">Déconnexion</button>
         </div>
@@ -25,7 +25,7 @@ export default {
             this.$router.push('/');
             return;
         }
-        this.$store.dispatch('userInfos');
+        this.$store.dispatch('getUserInfos');
     },
     computed: {
         ...mapState({ user: 'userInfos' })

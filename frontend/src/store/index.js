@@ -14,6 +14,12 @@ if (!user) {
         user = {
             userId: -1,
             token: '',
+            infos: {
+                first_name: '',
+                last_name: '',
+                email: '',
+                id: ''
+            }
             };
         } else {
             try {
@@ -23,6 +29,12 @@ if (!user) {
                     user = {
                         userId: -1,
                         token: '',
+                        infos:  {
+                            first_name: '',
+                            last_name: '',
+                            email: '',
+                            id: ''
+                        }
                     };
                 }
             }
@@ -36,6 +48,11 @@ const store = new Vuex.Store({
             last_name: '',
             email: ''
           },
+        comment: {
+            content: '',
+            postId: '',
+            userId: ''
+        }
     },
     mutations: {
         setStatus: function(state, status) {
@@ -46,10 +63,20 @@ const store = new Vuex.Store({
             localStorage.setItem('user', JSON.stringify(user));
             state.user = user;
         },
+        userInfos: function (state, userInfos) {
+            instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
+            state.userInfos = userInfos;
+        },
         logout: function(state) {
             state.user = {
                 userId: -1,
                 token: '',
+                infos:  {
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    id: ''
+                }
             }
             localStorage.removeItem('user');
         }
@@ -86,13 +113,21 @@ const store = new Vuex.Store({
             });         
         },
         getUserInfos: ({commit}) => {
-            instance.get(`/users/me/${user.user.id}`)
+            instance.get(`/users/me/${store.state.user.infos.id}`)
             .then(function (response) {
                 commit('user', response.data.user);
             })
             .catch(function () {
             });
         },
+        postComment: ({commit}, comment) => {
+            instance.post(`/comments`, comment)
+            .then(function (response) {
+                commit('comment', response.data);
+            })
+            .catch(function () {              
+            });
+        }
     }
 })
 

@@ -1,24 +1,24 @@
 <template>
     <div class="posts">
-        <div :key="index" v-for="(posts, index) in posts" class="allPosts card text-center">
-            <h3 class="post_card_title card-header">{{ posts.title }}</h3>
-            <div class="attachment card-body"><img v-if="posts.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + posts.attachment" alt="post image"></div>
-            <p v-if="posts.content" class="post_card_content card-text">{{ posts.content }}</p>
+        <div :key="post.id" v-for="post in posts" class="allPosts card text-center">
+            <h3 class="post_card_title card-header">{{ post.title }}</h3>
+            <div class="attachment card-body"><img v-if="post.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
+            <p v-if="post.content" class="post_card_content card-text">{{ post.content }}</p>
             <div class="form-row">
                     <div class="form-group">
-                        <textarea name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
+                        <textarea v-model="content" name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
                     </div>
                 <div class="card-footer comment_section_like">
-                <div class="text-muted">Créé le {{ posts.createdAt }}</div>
+                <div class="text-muted">Créé le {{ post.createdAt }}</div>
                 <button @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
                 <p class="post_card_content">0 likes</p>
                 <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
                 </div>
-                <div :key="index" v-for="(comments, index) in comments" class="post_card_content">
-                <p class="post_card_content" v-if="posts.id == comments.post_id">{{ comments.content }}<br> posté le {{ comments.createdAt }}</p>
+                <div :key="comment.id" v-for="comment in comments" class="post_card_content">
+                <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }}</p>
             </div>
             <div>
-            <button v-if="posts == null" class="btn btn-outline-primary">Publier</button>
+            <button v-if="post == null" class="btn btn-outline-primary">Publier</button>
             </div>
         </div>
         </div>
@@ -27,6 +27,7 @@
 
 <script>
     import axios from 'axios';
+    import { mapState } from 'vuex';
     export default {
         name: 'post',
         data() {
@@ -38,13 +39,9 @@
                     id: null
                 },
                 comments: {
-                    content: null
-                },
-                user: {
-                    first_name: null,
-                    last_name: null,
-                    userId: null
-                },
+                    content: null,
+                    postId: null
+                }
             }
         },
         created() {
@@ -55,12 +52,7 @@
                     console.log(this.posts);
 
                 });
-            axios
-                .get("http://localhost:3000/users/me")
-                .then((res) => {
-                    this.users = res.data;
-                    console.log(this.users);
-                })
+            this.$store.dispatch('getUserInfos');
         },
         mounted: function() {  
             axios
@@ -69,23 +61,26 @@
                 this.comments = res.data;
                 console.log(this.comments);
             });
+            this.userId = JSON.parse(localStorage.getItem("user"));
+            this.postId = this.post.id
         },
+        computed: {
+        ...mapState({ user: 'userInfos' })
+    },
         methods: {
-            postComment() {
-                axios
-                .post('http://localhost:3000/comments', this.comments, {
-                    params: {
-                        user_id: this.user.id,
-                        postId: this.posts.id,
-                        content: this.content
-                    }
+        postComment: function () {
+                const self = this;
+                this.$store.dispatch('postComment', {
+                    content: this.content,
+                    postId: this.postId,
+                }).then(function() {
+                    console.log(self)
+                }, function (error) {
+                    console.log(error)
                 })
-                .then((result) => {
-                    console.log(result)
-                })
-            }
-        }
-    }
+            },
+    },
+}
 </script>
 <style scoped>
     .posts {

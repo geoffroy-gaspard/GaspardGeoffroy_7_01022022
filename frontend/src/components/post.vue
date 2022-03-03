@@ -4,20 +4,18 @@
             <h3 class="post_card_title card-header">{{ post.title }}</h3>
             <div class="attachment card-body"><img v-if="post.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
             <p v-if="post.content" class="post_card_content card-text">{{ post.content }}</p>
-            <div class="form-row">
-                    <div class="form-group">
-                        <textarea v-model="content" name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
+            <comment v-bind:postId='post.id' @name="getPostId">
+                <template v-slot:like>
+                    <div class="card-footer comment_section_like">
+                        <div class="text-muted">Créé le {{ post.createdAt }}</div>
+                        <p class="post_card_content">0 likes</p>
+                        <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
                     </div>
-                <div class="card-footer comment_section_like">
-                <div class="text-muted">Créé le {{ post.createdAt }}</div>
-                <button :postId="post.id" @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
-                <p class="post_card_content">0 likes</p>
-                <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
-                </div>
-                <div :key="comment.id" v-for="comment in comments" class="post_card_content">
+                </template>
+            </comment>
+            <div :key="comment.id" v-for="comment in comments" class="post_card_content">
                 <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt }}</p>
             </div>
-        </div>
         </div>
         <div>
             <button v-if="post == null" class="btn btn-secondary">Publier un nouvel article</button>
@@ -28,11 +26,16 @@
 <script>
     import axios from 'axios';
     import { mapState } from 'vuex';
+    import comment from '@/components/comment.vue'
+
     export default {
         name: 'post',
+        components: {
+            comment
+  },
         data() {
             return {
-                posts: {
+                post: {
                     title: null,
                     content: null,
                     attachment: null,
@@ -40,11 +43,13 @@
                     userId: null,
                     comments: null
                 },
-                comments: {
+                comment: {
                     content: null,
                     postId: null,
                     userId: null
-                }
+                },
+                posts : [],
+                comments: []
             }
         },
         created() {
@@ -60,29 +65,14 @@
             axios
                 .get('http://localhost:3000/comments')
                 .then((res) => {
-                this.comments = res.data;
-                console.log(this.comments);
-            });
+                    this.comments = res.data;
+                    console.log(this.comments);
+                });
             this.$store.dispatch('getComments');
             this.userId = JSON.parse(localStorage.getItem("user"));
         },
         computed: {
         ...mapState({ user: 'userInfos' })
-    },
-        methods: {
-        postComment: function () {
-                this.$store.dispatch('getPosts');
-                const comment = { 
-                    content: this.content,
-                    postId: this.post.id
-                };
-                this.$store.dispatch('postComment', comment)
-                .then(function() {
-                    console.log(comment)
-                }, function (error) {
-                    console.log(error)
-                })
-            },
     },
 }
 </script>

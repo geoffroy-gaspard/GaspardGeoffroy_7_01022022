@@ -48,6 +48,12 @@ const store = new Vuex.Store({
             last_name: '',
             email: ''
           },
+        post: {
+            title: '',
+            content: '',
+            attachment: '',
+            userId: '',
+        },
         comment: {
             content: '',
             postId: '',
@@ -79,6 +85,12 @@ const store = new Vuex.Store({
                 }
             }
             localStorage.removeItem('user');
+        },
+        allPosts: function(state, post) {
+            state.post = post;
+        },
+        allComments: function(state, comment) {
+            state.comment = comment;
         }
     },
     actions: {
@@ -127,7 +139,23 @@ const store = new Vuex.Store({
             })
             .catch(function () {              
             });
-        }
+        },
+        getPosts: ({commit}) => {
+            instance.get(`/posts`)
+            .then(function (response) {
+                commit('allPosts', response.data);
+            })
+            .catch(function () {
+            });
+        },
+        getComments: ({commit}) => {
+            instance.get(`/comments`)
+            .then(function (response) {
+                commit('allComments', response.data);
+            })
+            .catch(function () {
+            });
+        },
     }
 })
 

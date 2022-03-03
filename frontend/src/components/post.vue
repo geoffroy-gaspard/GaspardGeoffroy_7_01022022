@@ -10,17 +10,17 @@
                     </div>
                 <div class="card-footer comment_section_like">
                 <div class="text-muted">Créé le {{ post.createdAt }}</div>
-                <button @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
+                <button :postId="post.id" @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
                 <p class="post_card_content">0 likes</p>
                 <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
                 </div>
                 <div :key="comment.id" v-for="comment in comments" class="post_card_content">
-                <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }}</p>
-            </div>
-            <div>
-            <button v-if="post == null" class="btn btn-outline-primary">Publier</button>
+                <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt }}</p>
             </div>
         </div>
+        </div>
+        <div>
+            <button v-if="post == null" class="btn btn-secondary">Publier un nouvel article</button>
         </div>
     </div>
 </template>
@@ -36,11 +36,14 @@
                     title: null,
                     content: null,
                     attachment: null,
-                    id: null
+                    id: null,
+                    userId: null,
+                    comments: null
                 },
                 comments: {
                     content: null,
-                    postId: null
+                    postId: null,
+                    userId: null
                 }
             }
         },
@@ -50,9 +53,8 @@
                 .then((res) => {
                     this.posts = res.data;
                     console.log(this.posts);
-
                 });
-            this.$store.dispatch('getUserInfos');
+            this.$store.dispatch('getPosts');
         },
         mounted: function() {  
             axios
@@ -61,20 +63,22 @@
                 this.comments = res.data;
                 console.log(this.comments);
             });
+            this.$store.dispatch('getComments');
             this.userId = JSON.parse(localStorage.getItem("user"));
-            this.postId = this.post.id
         },
         computed: {
         ...mapState({ user: 'userInfos' })
     },
         methods: {
         postComment: function () {
-                const self = this;
-                this.$store.dispatch('postComment', {
+                this.$store.dispatch('getPosts');
+                const comment = { 
                     content: this.content,
-                    postId: this.postId,
-                }).then(function() {
-                    console.log(self)
+                    postId: this.post.id
+                };
+                this.$store.dispatch('postComment', comment)
+                .then(function() {
+                    console.log(comment)
                 }, function (error) {
                     console.log(error)
                 })

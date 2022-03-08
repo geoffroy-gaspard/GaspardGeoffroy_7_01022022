@@ -95,7 +95,7 @@
                     image_url: this.image_url.url
                 };
                 this.$store.dispatch('newPost', post)
-                .then(window.location.reload,
+                .then(window.location.reload(),
                 localStorage.removeItem('image_url')
                 , function (error) {
                     console.log(error)

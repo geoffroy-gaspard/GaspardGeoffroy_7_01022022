@@ -140,6 +140,24 @@ const store = new Vuex.Store({
             .catch(function () {              
             });
         },
+        newPost: ({commit}, post) => {
+            instance.post('/posts', post)
+            .then(function(response) {
+                commit('post', response.data);
+            })
+            .catch(function () {                
+            });
+        },
+        uploadImage: ({commit}, image) => {
+            instance.post('/images/uploads', image)
+            .then(function(response) {
+                commit('image', response.data);
+                console.log(response.data);
+                localStorage.setItem('image_url', JSON.stringify(response.data));
+            })
+            .catch(function () {                
+            });
+        },
         getPosts: ({commit}) => {
             instance.get(`/posts`)
             .then(function (response) {

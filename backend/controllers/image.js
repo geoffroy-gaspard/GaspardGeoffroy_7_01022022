@@ -1,7 +1,6 @@
 function upload (req, res) {
     if(req.file.filename) {
         res.status(201).json({
-            message: 'Image enregistré avec succès',
             url: req.file.filename
         });
     }else{

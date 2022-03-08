@@ -45,21 +45,21 @@
             this.$store.dispatch('getComments');
             this.userId = JSON.parse(localStorage.getItem("user"));
             },
-                methods: {
-        postComment: function () {
-            this.$store.dispatch('getPosts');
-            const comment = { 
-                content: this.content,
-                postId: this.postId,
-            };
-            this.$store.dispatch('postComment', comment)
-            .then(window.location.reload()
-            , function (error) {
-                console.log(error)
-            })
+        methods: {
+            postComment: function () {
+                this.$store.dispatch('getPosts');
+                const comment = { 
+                    content: this.content,
+                    postId: this.postId,
+                };
+                this.$store.dispatch('postComment', comment)
+                .then(window.location.reload()
+                , function (error) {
+                    console.log(error)
+                })
+            },
         },
-    },
-}
+    }
 </script>
 
 <style scoped>

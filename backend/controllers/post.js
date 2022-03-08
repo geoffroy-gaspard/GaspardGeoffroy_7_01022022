@@ -3,7 +3,7 @@ const models = require('../models');
 
 function save (req, res) {
     const post = {
-        user_id: req.userData.id,
+        user_id: req.decodedToken.userId,
         title: req.body.title,
         content: req.body.content,
         attachment: req.body.image_url

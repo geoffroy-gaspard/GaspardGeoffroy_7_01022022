@@ -6,7 +6,8 @@ function save (req, res) {
         user_id: req.decodedToken.userId,
         title: req.body.title,
         content: req.body.content,
-        attachment: req.body.image_url
+        attachment: req.body.image_url,
+        likes: 0
     }
 
     const schema = {

@@ -174,6 +174,15 @@ const store = new Vuex.Store({
             .catch(function () {
             });
         },
+        getLikes: () => {
+            instance.get(`/likes`)
+            .then(function (response) {
+                response.data;
+                console.log(response.data)
+            })
+            .catch(function () {
+            });
+        }
     }
 })
 

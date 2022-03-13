@@ -3,10 +3,11 @@
         <div class="allPosts text-center new_post">
             <input v-model="title" class="form-row__input" type="text" placeholder="Titre" />
             <textarea v-model="content" class="form-row__input form-control comment-section" type="text" placeholder="..." />
-            <form>
+            <form v-if="this.image_url == null">
                 <input type="file" name="filename" @change="onFileSelected">
                 <button @click="uploadImage()" class="btn btn-secondary">Ajouter une image</button>
             </form>
+            <p v-else>Image Ajoutée !</p>
             <button @click="newPost()" class="btn btn-secondary">Publier un nouvel article</button>
         </div>
         <div :key="post.id" v-for="post in posts" class="allPosts card text-center">
@@ -17,8 +18,7 @@
                 <template v-slot:like>
                     <div class="card-footer comment_section_like">
                         <div class="text-muted">Créé le {{ post.createdAt }}</div>
-                        <p class="post_card_content">0 likes</p>
-                        <button class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
+                        <p class="post_card_content">{{ post.likes }} likes</p>
                     </div>
                 </template>
             </comment>
@@ -59,7 +59,7 @@
                 posts : [],
                 comments: [],
                 selectedFile: null,
-                image_url: null
+                image_url: JSON.parse(localStorage.getItem("image_url"))
             }
         },
         created() {
@@ -111,7 +111,7 @@
                 .then(res => {
                     console.log(res)
                 });
-            }
+            },
         },
     }
 </script>
@@ -202,6 +202,10 @@
     border-radius: 40px/40px;
     background-color: #277ceb;
     color: #DEEBFF;
+    }
+    .like-btn:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
     }
     .like-btn:hover > .icone {
         background-color: #0b5ed7;

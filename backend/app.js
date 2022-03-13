@@ -7,6 +7,7 @@ const postRoute = require('./routes/post');
 const userRoute = require('./routes/user');
 const commentRoute = require('./routes/comment');
 const imageRoute = require('./routes/image');
+const likeRoute = require('./routes/like');
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use("/posts", postRoute);
 app.use("/users", userRoute);
 app.use("/comments", commentRoute);
 app.use("/images", imageRoute);
+app.use("/likes", likeRoute);
 
 module.exports = app;

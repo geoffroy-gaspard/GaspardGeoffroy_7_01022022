@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Validator = require('fastest-validator');
 const models = require('../models');
-const utils = require('../utils/jwtUtils');
 
 function signUp(req, res) {
 

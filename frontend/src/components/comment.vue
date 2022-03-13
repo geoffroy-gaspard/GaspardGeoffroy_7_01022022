@@ -3,8 +3,11 @@
         <form class="form-group">
             <textarea v-model="content" name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
         </form>
-        <div>
-            <button @click="postComment()" type="submit" class="btn btn-secondary">Publier le commentaire</button>
+        <div class="comment_interaction">
+            <div>
+                <button @click="postComment()" type="submit" class="btn btn-secondary likeBtn">Publier le commentaire</button>
+            </div>
+            <button @click="likedAction()" class="btn like-btn btn-primary"><div class="icone"><font-awesome-icon icon="thumbs-up"/></div></button>
         </div>
         <slot name="like"></slot>
     </div>
@@ -43,7 +46,9 @@
                 console.log(this.comments);
             });
             this.$store.dispatch('getComments');
+            this.$store.dispatch('getLikes');
             this.userId = JSON.parse(localStorage.getItem("user"));
+            console.log(this.userId)
             },
         methods: {
             postComment: function () {
@@ -58,10 +63,42 @@
                     console.log(error)
                 })
             },
+            likedAction: function() {
+            axios
+                .get(`http://localhost:3000/likes/${this.postId}/like`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.userId.token}`
+                    }
+                })
+                .then(() => {
+                    this.$el.querySelector(".likeBtn").style.display = 'none';
+                    window.location.reload()
+                })
+                .catch(function () {
+                });
+            },
+            unLikedAction: function() {
+            axios
+                .get(`http://localhost:3000/likes/${this.postId}/dislike`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.userId.token}`
+                    }
+                })
+                .then(() => {
+                    window.location.reload()
+                })
+                .catch(function () {
+                });
+            }
         },
     }
 </script>
 
 <style scoped>
+
+.comment_interaction {
+    display: flex;
+    justify-content: space-around;
+}
 
 </style>

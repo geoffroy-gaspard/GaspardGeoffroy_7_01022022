@@ -6,10 +6,12 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 
 library.add(faThumbsUp)
+library.add(faThumbsDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

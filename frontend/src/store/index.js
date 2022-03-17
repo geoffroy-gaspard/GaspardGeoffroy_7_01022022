@@ -152,7 +152,6 @@ const store = new Vuex.Store({
             instance.post('/images/uploads', image)
             .then(function(response) {
                 commit('image', response.data);
-                console.log(response.data);
                 localStorage.setItem('image_url', JSON.stringify(response.data));
             })
             .catch(function () {                
@@ -170,15 +169,6 @@ const store = new Vuex.Store({
             instance.get(`/comments`)
             .then(function (response) {
                 commit('allComments', response.data);
-            })
-            .catch(function () {
-            });
-        },
-        getLikes: () => {
-            instance.get(`/likes`)
-            .then(function (response) {
-                response.data;
-                console.log(response.data)
             })
             .catch(function () {
             });

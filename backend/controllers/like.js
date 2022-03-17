@@ -203,18 +203,7 @@ const LIKED    = 1;
      });
   }
 
-  function index(req, res){
-    models.Like.findAll().then(result => {
-        res.status(200).json(result);
-    }).catch(error => {
-        res.status(500).json({
-            message: "Something went wrong!"
-        });
-    });
-}
-
 module.exports = {
     like: like,
-    dislike: dislike,
-    index: index
+    dislike: dislike
 }

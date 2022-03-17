@@ -193,7 +193,19 @@
         color: #DEEBFF;
         align-self: flex-end;
     }
-    .icone {
+    .dislike-btn{
+        height: 50px;
+        width: 50px;
+        border: 3px solid #DEEBFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4rem/4rem;
+        background-color: #c71212;
+        color: #DEEBFF;
+        align-self: flex-end;
+    }
+    .like-icone {
     height: 30px;
     width: 30px;
     display: flex;
@@ -201,6 +213,16 @@
     align-items: center;
     border-radius: 40px/40px;
     background-color: #277ceb;
+    color: #DEEBFF;
+    }
+    .dislike-icone {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px/40px;
+    background-color: #c71212;
     color: #DEEBFF;
     }
     .like-btn:hover {

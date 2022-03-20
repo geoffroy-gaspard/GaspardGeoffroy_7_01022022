@@ -43,6 +43,7 @@ const store = new Vuex.Store({
     state: {
         status: '',
         user: user,
+        isAdmin: '',
         userInfos: {
             first_name: '',
             last_name: '',
@@ -52,7 +53,7 @@ const store = new Vuex.Store({
             title: '',
             content: '',
             attachment: '',
-            userId: '',
+            userId: ''
         },
         comment: {
             content: '',
@@ -91,6 +92,9 @@ const store = new Vuex.Store({
         },
         allComments: function(state, comment) {
             state.comment = comment;
+        },
+        isAdmin: function(state, isAdmin) {
+            state.isAdmin = isAdmin;
         }
     },
     actions: {
@@ -127,7 +131,7 @@ const store = new Vuex.Store({
         getUserInfos: ({commit}) => {
             instance.get(`/users/me/${store.state.user.infos.id}`)
             .then(function (response) {
-                commit('user', response.data.user);
+                commit('isAdmin', response.data);
             })
             .catch(function () {
             });
@@ -171,6 +175,15 @@ const store = new Vuex.Store({
                 commit('allComments', response.data);
             })
             .catch(function () {
+            });
+        },
+        deletePost: ({commit}, postId) => {
+            instance.delete(`/posts/${postId}`)
+            .then(function (response) {
+                commit(response.data);
+            })
+            .catch(function () {
+
             });
         }
     }

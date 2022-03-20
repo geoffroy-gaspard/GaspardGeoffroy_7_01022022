@@ -75,7 +75,7 @@ function update (req, res){
         attachment: req.body.image_url
     }
 
-    const user_id = req.userData.id;
+    const user_id = req.decodedToken.userId;
 
     const schema = {
         title: { type:'string', optional: false, max: '100'},
@@ -108,9 +108,11 @@ function update (req, res){
 
 function destroy(req, res){
     const id = req.params.id;
-    const user_id = req.userData.id;
+    models.Like.destroy({where: {post_id:id}})
 
-    models.Post.destroy({where: {id:id, user_id:user_id}}).then(result => {
+    models.Comment.destroy({where: {post_id:id}})
+
+    models.Post.destroy({where: {id:id}}).then(result => {
         res.status(200).json({
             message: 'post supprimé avec succès'
         });

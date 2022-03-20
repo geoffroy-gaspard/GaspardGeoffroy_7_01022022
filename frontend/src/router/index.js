@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
+Vue.use(require('vue-moment'))
 
 const routes = [
   {

@@ -1,14 +1,15 @@
 <template>
     <div class="card">
         <form class="form-group">
-            <textarea v-model="content" name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
+            <textarea v-model="comment.content" name="content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un commentaire"  rows="3"/>
         </form>
         <div class="comment_interaction">
             <div>
                 <button @click="postComment()" type="submit" class="btn btn-secondary likeBtn">Publier le commentaire</button>
             </div>
+                <button @click="deletePost()" v-if="$store.state.isAdmin == true || $store.state.user.infos.id == postUserId" class="btn btn-danger">Supprimer le post</button>
             <div>
-                <button @click="likedAction()" class="btn like-btn btn-primary"><div class="like-icone"><font-awesome-icon icon="thumbs-up"/></div></button>
+                <button :hidden='!isActive' @click="likedAction()" class="btn like-btn btn-primary"><div class="like-icone"><font-awesome-icon icon="thumbs-up"/></div></button>
                 <button :hidden='isActive' @click="dislikedAction()" class="btn dislike-btn btn-danger">Supprimer le like</button>
             </div>
         </div>
@@ -23,7 +24,7 @@
         name: 'comment',
         data () {
             return {
-                posts: {
+                post: {
                     title: null,
                     content: null,
                     attachment: null,
@@ -31,16 +32,17 @@
                     userId: null,
                     comments: null
                 },
-                comments: {
+                comment: {
                     content: null,
                     postId: null,
                     userId: null
                 },
-                isActive : '',
+                isActive : true,
             }
         },
         props: {
-        postId: Number
+        postId: Number,
+        postUserId: Number
     },
         mounted: function() {  
             axios
@@ -50,14 +52,14 @@
                 console.log(this.comments);
             });
             this.$store.dispatch('getComments');
+            this.$store.dispatch('getUserInfos');
             this.userId = JSON.parse(localStorage.getItem("user"));
-            console.log(this.userId)
             },
         methods: {
             postComment: function () {
                 this.$store.dispatch('getPosts');
                 const comment = { 
-                    content: this.content,
+                    content: this.comment.content,
                     postId: this.postId,
                 };
                 this.$store.dispatch('postComment', comment)
@@ -92,6 +94,11 @@
                 })
                 .catch(function () {
                 });
+            },
+            deletePost: function () {
+                let postId = this.postId
+                this.$store.dispatch('deletePost', postId)
+                window.location.reload();
             }
         },
     }

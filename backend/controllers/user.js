@@ -75,7 +75,12 @@ function login(req, res) {
                         res.status(200).json({
                             message: "Authentication successful!",
                             token: token,
-                            infos: user
+                            infos : {
+                                id: user.id,
+                                first_name: user.first_name,
+                                last_name: user.last_name,
+                                email: user.email
+                            }
                         });
                     });
                 }else{
@@ -94,7 +99,7 @@ function login(req, res) {
 
 function userInfos (req, res) {
     models.User.findOne({ where: { id: req.params.id }})
-        .then(user => res.status(200).json(user))
+        .then(user => res.status(200).json(user.isAdmin))
         .catch(error => res.status(500).json(error))
 };
 

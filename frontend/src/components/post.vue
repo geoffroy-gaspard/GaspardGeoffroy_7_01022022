@@ -1,8 +1,8 @@
 <template>
     <div class="posts">
         <div class="allPosts text-center new_post">
-            <input v-model="title" class="form-row__input" type="text" placeholder="Titre" />
-            <textarea v-model="content" class="form-row__input form-control comment-section" type="text" placeholder="..." />
+            <input v-model="post.title" class="form-row__input" type="text" placeholder="Titre" />
+            <textarea v-model="post.content" class="form-row__input form-control comment-section" type="text" placeholder="..." />
             <form v-if="this.image_url == null">
                 <input type="file" name="filename" @change="onFileSelected">
                 <button @click="uploadImage()" class="btn btn-secondary">Ajouter une image</button>
@@ -12,19 +12,19 @@
         </div>
         <div :key="post.id" v-for="post in posts" class="allPosts card text-center">
             <h3 class="post_card_title card-header">{{ post.title }}</h3>
-            <div class="attachment card-body"><img v-if="post.attachment" class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
+            <div  v-if="post.attachment !== null" class="attachment card-body"><img class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
             <p v-if="post.content" class="post_card_content card-text">{{ post.content }}</p>
-            <comment v-bind:postId='post.id' @name="getPostId">
+            <comment v-bind:postId='post.id' v-bind:postUserId="post.user_id">
                 <template v-slot:like>
                     <div class="card-footer comment_section_like">
-                        <div class="text-muted">Créé le {{ post.createdAt }}</div>
+                        <div class="text-muted">Créé le {{ post.createdAt | moment("DD.MM.YY") }} à {{ post.createdAt | moment("HH:mm") }}</div>
                         <p class="post_card_content">{{ post.likes }} likes</p>
                     </div>
                 </template>
             </comment>
             <div class="post_card_content comment_content">
                 <div :key="comment.id" v-for="comment in comments">
-                    <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt }}</p>
+                    <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }} à {{ comment.createdAt | moment("HH:mm")  }}</p>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                     postId: null,
                     userId: null
                 },
-                posts : [],
+                posts: [],
                 comments: [],
                 selectedFile: null,
                 image_url: JSON.parse(localStorage.getItem("image_url"))
@@ -88,18 +88,29 @@
             newPost: function () {
                 if (localStorage.image_url) {
                     this.image_url = JSON.parse(localStorage.getItem("image_url"));
-                }
-                const post = {
-                    title: this.title,
-                    content: this.content,
+                    const post = {
+                    title: this.post.title,
+                    content: this.post.content,
                     image_url: this.image_url.url
-                };
+                }
                 this.$store.dispatch('newPost', post)
                 .then(window.location.reload(),
                 localStorage.removeItem('image_url')
                 , function (error) {
                     console.log(error)
                 })
+                } else {
+                    const post = {
+                        title: this.post.title,
+                        content: this.post.content
+                    }
+                    this.$store.dispatch('newPost', post)
+                .then(window.location.reload(),
+                localStorage.removeItem('image_url')
+                , function (error) {
+                    console.log(error)
+                })
+                }
             },
             onFileSelected(event) {
                 this.selectedFile = event.target.files[0]
@@ -111,14 +122,14 @@
                 .then(res => {
                     console.log(res)
                 });
-            },
+            }
         },
     }
 </script>
 <style scoped>
     .posts {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         align-items: center;
     }
 
@@ -137,6 +148,7 @@
         display: flex;
         margin: 5px 0 5px 0;
         justify-self: center;
+        justify-content: space-between;
     }
 
     .attachment {
@@ -162,6 +174,7 @@
         font-size: 9px;
     }
     .new_post {
+        order: 99;
         display: flex;
         flex-direction: column;
         align-items: center;

@@ -30,13 +30,13 @@
                     attachment: null,
                     id: null,
                     userId: null,
-                    comments: null
                 },
                 comment: {
                     content: null,
                     postId: null,
-                    userId: null
+                    userId: null,
                 },
+                users: {},
                 isActive : true,
             }
         },
@@ -51,13 +51,19 @@
                 this.comments = res.data;
                 console.log(this.comments);
             });
-            this.$store.dispatch('getComments');
             this.$store.dispatch('getUserInfos');
             this.userId = JSON.parse(localStorage.getItem("user"));
+            axios
+                .get('http://localhost:3000/users/me')
+                .then((res) => {
+                    this.users = res.data.reduce((acc, value) => {
+                        acc[value.id] = value
+                        return acc
+                    }, {});
+                });
             },
         methods: {
             postComment: function () {
-                this.$store.dispatch('getPosts');
                 const comment = { 
                     content: this.comment.content,
                     postId: this.postId,

@@ -10,14 +10,14 @@
             <p v-else>Image Ajoutée !</p>
             <button @click="newPost()" class="btn btn-secondary">Publier un nouvel article</button>
         </div>
-        <div :key="post.id" v-for="post in posts" class="allPosts card text-center">
+        <div :key="post.id" v-for="post in myPosts" class="allPosts card text-center">
             <h3 class="post_card_title card-header">{{ post.title }}</h3>
-            <div  v-if="post.attachment !== null" class="attachment"><img class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
-            <p v-if="post.content" class="post_card_content card-body card-text">{{ post.content }}</p>
+            <div  v-if="post.attachment !== null" class="attachment card-body"><img class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
+            <p v-if="post.content" class="post_card_content card-text">{{ post.content }}</p>
             <comment v-bind:postId='post.id' v-bind:postUserId="post.user_id">
                 <template v-slot:like>
                     <div class="card-footer comment_section_like">
-                        <div class="text-muted">Créé le {{ post.createdAt | moment("DD.MM.YY") }} à {{ post.createdAt | moment("HH:mm") }} par {{users[post.user_id].first_name}} {{users[post.user_id].last_name}}</div>
+                        <div class="text-muted">Créé le {{ post.createdAt | moment("DD.MM.YY") }} à {{ post.createdAt | moment("HH:mm") }} de {{users[post.user_id].first_name}} {{users[post.user_id].last_name}}</div>
                         <p class="post_card_content">{{ post.likes }} likes</p>
                     </div>
                 </template>
@@ -37,7 +37,7 @@
     import comment from '@/components/comment.vue'
 
     export default {
-        name: 'post',
+        name: 'mypost',
         components: {
             comment
     },
@@ -48,7 +48,8 @@
                     content: null,
                     attachment: null,
                     id: null,
-                    userId: null
+                    userId: null,
+                    comments: null
                 },
                 comment: {
                     content: null,
@@ -76,6 +77,7 @@
                         acc[value.id] = value
                         return acc
                     }, {});
+                    console.log(this.users)
                 });
         },
         mounted: function() {  
@@ -88,6 +90,9 @@
             this.userId = JSON.parse(localStorage.getItem("user"));
         },
         computed: {
+            myPosts: function () {
+                return this.posts.filter(post => post.user_id === this.$store.state.user.infos.id)
+            },
         ...mapState({ user: 'userInfos' })
         },
         methods: {
@@ -132,6 +137,7 @@
         },
     }
 </script>
+
 <style scoped>
     .posts {
         display: flex;

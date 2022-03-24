@@ -103,8 +103,42 @@ function userInfos (req, res) {
         .catch(error => res.status(500).json(error))
 };
 
+function allAccounts (req, res){
+    models.User.findAll().then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json({
+            message: 'Un problème est survenue'
+        });
+    });
+}
+
+function deleteAccount (req, res) {
+    const user_id = req.decodedToken.userId;
+    models.User.findOne({ where: { id: user_id}})
+        .then((user) => {
+            models.Like.destroy({where: {user_id: user_id}})
+
+            models.Comment.destroy({where: {user_id:user_id}})
+
+            models.Post.destroy({where: {user_id:user_id}})
+
+            models.User.destroy({ where: { id: user_id}})
+            .then(() => res.status(200).json({ message: 'compte supprimé avec succès' }))
+            .catch (error => res.status(400).json({error}))        
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Un problème est survenue',
+                error: error
+        });
+    })
+}
+
 module.exports = {
     signUp: signUp,
     login: login,
-    userInfos: userInfos
+    userInfos: userInfos,
+    allAccounts: allAccounts,
+    deleteAccount: deleteAccount
 }

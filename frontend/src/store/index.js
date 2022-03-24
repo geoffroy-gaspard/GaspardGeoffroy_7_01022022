@@ -42,6 +42,7 @@ if (!user) {
 const store = new Vuex.Store({
     state: {
         status: '',
+        users: {},
         user: user,
         isAdmin: '',
         userInfos: {
@@ -86,6 +87,9 @@ const store = new Vuex.Store({
                 }
             }
             localStorage.removeItem('user');
+        },
+        users: function(state, users) {
+            state.users = users;
         },
         allPosts: function(state, post) {
             state.post = post;
@@ -157,29 +161,23 @@ const store = new Vuex.Store({
             .then(function(response) {
                 commit('image', response.data);
                 localStorage.setItem('image_url', JSON.stringify(response.data));
+                window.location.reload()
             })
             .catch(function () {                
-            });
-        },
-        getPosts: ({commit}) => {
-            instance.get(`/posts`)
-            .then(function (response) {
-                commit('allPosts', response.data);
-            })
-            .catch(function () {
-            });
-        },
-        getComments: ({commit}) => {
-            instance.get(`/comments`)
-            .then(function (response) {
-                commit('allComments', response.data);
-            })
-            .catch(function () {
             });
         },
         deletePost: ({commit}, postId) => {
             instance.delete(`/posts/${postId}`)
             .then(function (response) {
+                commit(response.data);
+            })
+            .catch(function () {
+
+            });
+        },
+        deleteAccount: ({commit}) => {
+            instance.delete('/users/me')
+            .then(function(response) {
                 commit(response.data);
             })
             .catch(function () {

@@ -42,7 +42,9 @@
         },
         props: {
         postId: Number,
-        postUserId: Number
+        postUserId: Number,
+        userFirstName: String,
+        userLastName: String
     },
         mounted: function() {  
             axios

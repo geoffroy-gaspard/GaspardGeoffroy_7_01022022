@@ -88,9 +88,6 @@ const store = new Vuex.Store({
             }
             localStorage.removeItem('user');
         },
-        users: function(state, users) {
-            state.users = users;
-        },
         allPosts: function(state, post) {
             state.post = post;
         },
@@ -172,7 +169,6 @@ const store = new Vuex.Store({
                 commit(response.data);
             })
             .catch(function () {
-
             });
         },
         deleteAccount: ({commit}) => {
@@ -181,7 +177,14 @@ const store = new Vuex.Store({
                 commit(response.data);
             })
             .catch(function () {
-
+            });
+        },
+        updateAccount: ({commit}, userInfos) => {
+            instance.patch('/users/me', userInfos)
+            .then(function(response) {
+                commit('userInfos', response.data);
+            })
+            .catch(function () {
             });
         }
     }

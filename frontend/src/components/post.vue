@@ -2,7 +2,7 @@
     <div class="posts">
         <div class="allPosts text-center new_post">
             <input v-model="post.title" class="form-row__input" type="text" placeholder="Titre" />
-            <textarea v-model="post.content" class="form-row__input form-control comment-section" type="text" placeholder="..." />
+            <textarea v-model="post.content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un nouveau message" />
             <form @submit.prevent="uploadImage()" v-if="this.image_url == null">
                 <input type="file" name="filename" @change="onFileSelected($event)">
                 <button class="btn btn-secondary">Ajouter une image</button>
@@ -14,7 +14,7 @@
             <h3 class="post_card_title card-header">{{ post.title }}</h3>
             <div  v-if="post.attachment !== null" class="attachment"><img class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
             <p v-if="post.content" class="post_card_content card-body card-text">{{ post.content }}</p>
-            <comment v-bind:postId='post.id' v-bind:postUserId="post.user_id">
+            <comment v-bind:postId='post.id' v-bind:postUserId="post.user_id" v-bind:userFirstName="users[post.user_id].first_name" v-bind:userLastName="users[post.user_id].last_name">
                 <template v-slot:like>
                     <div class="card-footer comment_section_like">
                         <div class="text-muted">Créé le {{ post.createdAt | moment("DD.MM.YY") }} à {{ post.createdAt | moment("HH:mm") }} par {{users[post.user_id].first_name}} {{users[post.user_id].last_name}}</div>
@@ -69,6 +69,8 @@
                     this.posts = res.data;
                     console.log(this.posts);
                 });
+        },
+        mounted: function() {
             axios
                 .get('http://localhost:3000/users/me')
                 .then((res) => {
@@ -76,9 +78,8 @@
                         acc[value.id] = value
                         return acc
                     }, {});
-                });
-        },
-        mounted: function() {  
+                    console.log(this.users[4].first_name)
+                }); 
             axios
                 .get('http://localhost:3000/comments')
                 .then((res) => {
@@ -137,6 +138,7 @@
         display: flex;
         flex-direction: column-reverse;
         align-items: center;
+        border-top: 5px solid #FFCE35;
     }
 
     .allPosts { 

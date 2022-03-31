@@ -8,5 +8,6 @@ router.post('/login', userCtrl.login);
 router.get('/me/:id', authMiddleware.auth, userCtrl.userInfos);
 router.get('/me', userCtrl.allAccounts);
 router.delete('/me', authMiddleware.auth, userCtrl.deleteAccount);
+router.patch('/me', authMiddleware.auth, userCtrl.update);
 
 module.exports = router;

@@ -7,6 +7,7 @@
     <div class="title nav">
       <router-link class="userI" v-if="isHomePage == true" to="/Login">{{ msg }}</router-link>
       <router-link class="userI" v-else to="/">{{ msg }}</router-link>
+      <button @click="logout()" class="userI btn" v-if="$store.state.user.userId !== -1">Déconnexion</button>
     </div>
   </div>
 </template>
@@ -18,17 +19,23 @@ export default {
     msg: String
   },
   watch: {
-  $route: {
-     immediate: true,
-     handler() {
+    $route: {
+      immediate: true,
+      handler() {
          if(this.$route.path == '/') {
            this.isHomePage = true;
          } else {
             this.isHomePage = false;
          }
-     }
+      }
+    }
+  },
+  methods: {
+    logout: function() {
+            this.$store.commit('logout');
+            window.location.reload()
+        }
   }
-}
 }
 </script>
 
@@ -59,6 +66,7 @@ a {
   padding: 3%;
   margin: 2%;
   font-weight: bold;
+  border-radius: 0.25rem;
 }
 .userI:hover {
   background-color: rgb(228, 172, 183);

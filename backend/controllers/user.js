@@ -135,10 +135,43 @@ function deleteAccount (req, res) {
     })
 }
 
+function update  (req, res) { 
+    const user_id = req.decodedToken.userId;
+    const updatedUser = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email
+    }
+    const schema = {
+        first_name: { type:'string', optional: false, max: '100'},
+        last_name: { type:'string', optional: false, max: '100'},
+        email: { type:'string', optional:false, max:'255', min:'6'}
+    }
+    const v = new Validator();
+    const validationResponse = v.validate(updatedUser, schema);
+
+    if(validationResponse !== true || (req.body.first_name == null && req.body.last_name == null && req.body.email == null)) {
+        return res.status(400).json({
+            message: 'La validation a échoué',
+            errors: validationResponse
+        });
+    }
+
+    models.User.findOne({ where: { id: user_id }})
+        .then(() => {
+            models.User.update(updatedUser, { where: { id: user_id }})         
+        .then(() => res.status(201).json({ message: 'Compte mis à jour avec succès',
+        user: updatedUser }))
+        .catch(error => res.status(500).json({ message: 'Un problème est survenue',
+        error: error }));
+        })
+};
+
 module.exports = {
     signUp: signUp,
     login: login,
     userInfos: userInfos,
     allAccounts: allAccounts,
-    deleteAccount: deleteAccount
+    deleteAccount: deleteAccount,
+    update: update
 }

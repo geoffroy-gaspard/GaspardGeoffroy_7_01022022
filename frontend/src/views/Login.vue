@@ -1,38 +1,43 @@
 <template>
     <div class="card">
         <headerBar msg="Accueil"/>
-        <h1 class="card_title" v-if="mode == 'login'">Connexion</h1>
-        <h1 class="card_title" v-else>Inscription</h1>
-        <p class="card_subtitle" v-if="mode == 'login'">Vous n'avez pas encore de compte ? <span class="card__action"
-                @click="switchToSignUp()"> Créer un compte</span></p>
-        <p class="card_subtitle" v-else>Vous avez déjà un compte ? <span class="card__action" @click="switchToLogin()">
-                Vous connecter</span></p>
-        <div class="form-row" v-if="mode == 'signUp'">
-            <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom" />
-            <input v-model="nom" class="form-row__input" type="text" placeholder="Nom" />
+        <div class="card__login">
+            <div class="card__login--inputs">
+                <h1 class="card_title" v-if="mode == 'login'">Connexion</h1>
+                <h1 class="card_title" v-else>Inscription</h1>
+                <p class="card_subtitle" v-if="mode == 'login'">Vous n'avez pas encore de compte ? <span class="card__action"
+                        @click="switchToSignUp()"> Créer un compte</span></p>
+                <p class="card_subtitle" v-else>Vous avez déjà un compte ? <span class="card__action" @click="switchToLogin()">
+                        Vous connecter</span></p>
+                <div class="form-row" v-if="mode == 'signUp'">
+                    <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom" />
+                    <input v-model="nom" class="form-row__input" type="text" placeholder="Nom" />
+                </div>
+                <div class="form-row">
+                    <input v-model="email" class="form-row__input" type="text" placeholder="Adresse Email" />
+                </div>
+                <div class="form-row">
+                    <input v-model="password" class="form-row__input" type="password" placeholder="Mot de Passe" />
+                </div>
+                <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
+                    Adresse email et/ou mot de passe invalide
+                </div>
+                <div class="form-row" v-if="mode == 'signUp' && status == 'error_signup'">
+                    Adresse email déjà utilisée
+                </div>
+                <div class="form-row login">
+                    <button @click="login()" class="btn btn-secondary button--disabled" :class="{'button--disabled' : !validatedFields}" v-if="mode == 'login'">
+                        <span v-if="status == 'loading'">Connexion en cours...</span>
+                        <span v-else>Connexion</span>
+                    </button>
+                    <button @click="signUp()" class="btn btn-secondary" :class="{'button--disabled' : !validatedFields}" v-else>
+                        <span v-if="status == 'loading'">Création en cours...</span>
+                        <span v-else>Créer mon compte</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="form-row">
-            <input v-model="email" class="form-row__input" type="text" placeholder="Adresse Email" />
-        </div>
-        <div class="form-row">
-            <input v-model="password" class="form-row__input" type="password" placeholder="Mot de Passe" />
-        </div>
-        <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
-            Adresse email et/ou mot de passe invalide
-        </div>
-        <div class="form-row" v-if="mode == 'signUp' && status == 'error_signup'">
-            Adresse email déjà utilisée
-        </div>
-        <div class="form-row">
-            <button @click="login()" class="btn btn-outline-secondary button--disabled" :class="{'button--disabled' : !validatedFields}" v-if="mode == 'login'">
-                <span v-if="status == 'loading'">Connexion en cours...</span>
-                <span v-else>Connexion</span>
-            </button>
-            <button @click="signUp()" class="btn btn-outline-secondary" :class="{'button--disabled' : !validatedFields}" v-else>
-                <span v-if="status == 'loading'">Création en cours...</span>
-                 <span v-else>Créer mon compte</span>
-            </button>
-        </div>
+        <footerBar/>
     </div>
 </template>
 
@@ -40,11 +45,13 @@
 
 import headerBar from '@/components/headerBar.vue'
 import { mapState } from 'vuex';
+import footerBar from '@/components/footer.vue'
 
     export default {
         name: 'Login',
         components: {
         headerBar,
+        footerBar
     },
         data: function () {
             return {
@@ -114,10 +121,36 @@ import { mapState } from 'vuex';
     }
 </script>
 <style scoped>
+
+.card__login {
+    color: #f0f2f5;
+    background-color: #f0f2f5;
+    background-image: url(../assets/background2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 750px;
+    opacity: 0.85;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card__login--inputs {
+    background: rgb(24, 119, 242, 0.85);
+    width: 50%;
+    border-radius: 2rem/2rem;
+}
+
 .form-row__input {
     margin: 1%;
 }
+
+.login {
+    margin-bottom: 2%;
+}
+
 .card__action:hover {
-    color: rgb(20, 161, 255);
+    color: black;
 }
 </style>

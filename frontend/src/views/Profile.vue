@@ -2,9 +2,8 @@
     <div id="profile" class="card">
         <headerBar msg="Accueil"/>
         <div id="infos">
-            <h2 class="card_title">Espace Perso</h2>
-            <p class="card_subtitle">ma page</p>
-            <p>{{ $store.state.user.infos.first_name }} {{ $store.state.user.infos.last_name }} <br> {{ $store.state.user.infos.email }}</p>
+            <h2 class="card_title">Bienvenue sur votre espace perso</h2>
+            <p><strong>{{ $store.state.user.infos.first_name }} {{ $store.state.user.infos.last_name }} <br> {{ $store.state.user.infos.email }}</strong></p>
             <div class="form-row" :hidden="isHidden">
                 <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom" />
                 <input v-model="nom" class="form-row__input" type="text" placeholder="Nom" />
@@ -17,11 +16,11 @@
                 <button @click="modifyAccount()" class="btn btn-warning">Modifier mon compte</button>
             </div>
         </div>
-        <h2>Vos Posts</h2>
         <mypost/>
         <div>
-            <button @click="deleteAccount()" class="btn btn-danger">Supprimer mon compte</button>
+            <button @click="deleteAccount()" class="delete_btn btn btn-danger">Supprimer mon compte</button>
         </div>
+        <footerBar/>
     </div>
 </template>
 
@@ -29,12 +28,14 @@
 import { mapState } from 'vuex';
 import headerBar from '@/components/headerBar.vue'
 import mypost from '@/components/mypost.vue'
+import footerBar from '@/components/footer.vue'
 
 export default {
     name: 'Profile',
     components: {
         headerBar,
-        mypost
+        mypost,
+        footerBar
     },
     data() {
         return {
@@ -84,10 +85,14 @@ export default {
 
 <style scoped>
 #profile {
-    background-color: #FEBEBE;
+    background-color: #f0f2f5;
+    border: 0;
 }
 #infos {
-    background-color: white;
+    background-color: #f0f2f5;
     padding-bottom: .5rem;
+}
+.delete_btn {
+    margin: 0 0 3% 0;
 }
 </style>

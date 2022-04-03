@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="title">
-    <img class="logo" alt="Groupomania logo" src="../assets/icon.png">
+    <img class="logo" alt="Groupomania logo" src="../assets/icon2.png">
     <h1>Groupomania</h1>
     </div>
     <div class="title nav">
@@ -43,15 +43,18 @@ export default {
 <style scoped>
 a {
   font-style: none;
-  color: rgb(32, 32, 32);
+  color: #ffffff;
   text-decoration-line: none;
 }
 .header {
-  background-color: rgb(255, 255, 255);
-  color: rgb(32, 32, 32);
+  background-color: #1877f2;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.header > h1 {
+  margin: 0;
 }
 .title {
   display: flex;
@@ -59,17 +62,18 @@ a {
   justify-content: right;
 }
 .logo {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
 }
 .userI {
   padding: 3%;
   margin: 2%;
   font-weight: bold;
   border-radius: 0.25rem;
+  color: #ffffff;
 }
 .userI:hover {
-  background-color: rgb(228, 172, 183);
+  background-color: #f0f2f5;
   color: black;
 }
 .nav {

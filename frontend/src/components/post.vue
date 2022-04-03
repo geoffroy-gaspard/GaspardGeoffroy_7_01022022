@@ -24,7 +24,7 @@
             </comment>
             <div class="post_card_content comment_content">
                 <div :key="comment.id" v-for="comment in comments">
-                    <p class="post_card_content" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }} à {{ comment.createdAt | moment("HH:mm")  }} de {{users[comment.user_id].first_name}} {{users[comment.user_id].last_name}}</p>
+                    <p class="post_card_content comment__content--section" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }} à {{ comment.createdAt | moment("HH:mm")  }} de {{users[comment.user_id].first_name}} {{users[comment.user_id].last_name}}</p>
                 </div>
             </div>
         </div>
@@ -138,17 +138,17 @@
         display: flex;
         flex-direction: column-reverse;
         align-items: center;
-        border-top: 5px solid #FFCE35;
+        background-color: #f0f2f5;
     }
 
     .allPosts { 
-        width: 70%;
+        width: 80%;
         margin: 3% 0 3% 0;
         background-color: white;
         min-height: 240px;
         height: auto;
-        border: 5px solid #00000059;
-        box-shadow: 0px 0px 12px 3px #d2d2d2;
+        border: 5px solid #ffffff;
+        box-shadow: 0px 0px 2px 2px #9e9fa0;
     }
 
     .post_card_title {
@@ -159,7 +159,7 @@
 
     .attachment {
         width: auto;
-        height: 350px;
+        height: 400px;
         max-height: 60%;
     }
 
@@ -198,6 +198,9 @@
         flex-direction: column-reverse;
         flex-wrap: nowrap;
         justify-content: space-between;
+    }
+    .comment__content--section {
+        background: rgb(240, 242, 245, 0.85);
     }
     .like-btn{
         height: 50px;

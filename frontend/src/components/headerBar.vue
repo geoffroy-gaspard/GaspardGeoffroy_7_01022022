@@ -2,7 +2,7 @@
   <div class="header">
     <div class="title">
     <img class="logo" alt="Groupomania logo" src="../assets/icon2.png">
-    <h1>Groupomania</h1>
+    <h1 class="title__groupomania">Groupomania</h1>
     </div>
     <div class="title nav">
       <router-link class="userI" v-if="isHomePage == true" to="/Login">{{ msg }}</router-link>
@@ -65,9 +65,12 @@ a {
   width: 3rem;
   height: 3rem;
 }
+.title__groupomania {
+  margin: 0;
+}
 .userI {
-  padding: 3%;
-  margin: 2%;
+  padding: 2%;
+  margin: 1%;
   font-weight: bold;
   border-radius: 0.25rem;
   color: #ffffff;

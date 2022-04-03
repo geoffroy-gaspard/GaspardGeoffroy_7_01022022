@@ -139,6 +139,11 @@
         flex-direction: column-reverse;
         align-items: center;
         background-color: #f0f2f5;
+        background-image: url(../assets/background2.jpg);
+        background-size: auto;
+        background-repeat: repeat;
+        background-position: center;
+        opacity: 0.85;
     }
 
     .allPosts { 

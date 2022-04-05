@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "Nocremix421!",
     "database": "groupomania_new",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "",
+    "password": "Nocremix421!",
     "database": "groupomania_new",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "",
+    "password": "Nocremix421!",
     "database": "groupomania_new",
     "host": "localhost",
     "dialect": "mysql"

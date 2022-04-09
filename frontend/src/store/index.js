@@ -5,10 +5,12 @@ Vue.use(Vuex)
 
 const axios = require('axios');
 
+// Définition d'une URL de base
 const instance = axios.create({
     baseURL: 'http://localhost:3000/'
 });
 
+// Définition d'un utilisateur et ajout de son token dans l'"Authorization" du headers des requêtes axios
 let user = localStorage.getItem('user');
 if (!user) {
         user = {
@@ -39,6 +41,7 @@ if (!user) {
                 }
             }
 
+// Création d'une nouvelle instance de store
 const store = new Vuex.Store({
     state: {
         status: '',
@@ -99,6 +102,7 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        // Fonction de création de compte
         signUp: ({commit}, userInfos) => {
             commit('setStatus', 'loading');
             return new Promise((resolve, reject) => {
@@ -114,6 +118,7 @@ const store = new Vuex.Store({
                 });
             });         
         },
+        // Fonction de login
         login: ({commit}, userInfos) => {
             commit('setStatus', 'loading');
             return new Promise((resolve, reject) => {
@@ -129,6 +134,7 @@ const store = new Vuex.Store({
                 });
             });         
         },
+        // Fonction permettant de connaîte le statut isAdmin de l'utilisateur connecté
         getUserInfos: ({commit}) => {
             instance.get(`/users/me/${store.state.user.infos.id}`)
             .then(function (response) {
@@ -137,6 +143,7 @@ const store = new Vuex.Store({
             .catch(function () {
             });
         },
+        // Fonction de création d'un nouveau commentaire
         postComment: ({commit}, comment) => {
             instance.post(`/comments`, comment)
             .then(function (response) {
@@ -145,6 +152,7 @@ const store = new Vuex.Store({
             .catch(function () {              
             });
         },
+        // Fonction de création d'un nouveau post
         newPost: ({commit}, post) => {
             instance.post('/posts', post)
             .then(function(response) {
@@ -153,6 +161,7 @@ const store = new Vuex.Store({
             .catch(function () {                
             });
         },
+        // Fonction d'ajout d'une image à un nouveau post
         uploadImage: ({commit}, image) => {
             instance.post('/images/uploads', image)
             .then(function(response) {
@@ -163,6 +172,7 @@ const store = new Vuex.Store({
             .catch(function () {                
             });
         },
+        // Fonction de suppression d'un post
         deletePost: ({commit}, postId) => {
             instance.delete(`/posts/${postId}`)
             .then(function (response) {
@@ -171,6 +181,7 @@ const store = new Vuex.Store({
             .catch(function () {
             });
         },
+        // Fonction de suppression du compte de l'utilisateur connecté
         deleteAccount: ({commit}) => {
             instance.delete('/users/me')
             .then(function(response) {
@@ -179,6 +190,7 @@ const store = new Vuex.Store({
             .catch(function () {
             });
         },
+        // Fonction de mise à jour du compte de l'utilisateur connecté
         updateAccount: ({commit}, userInfos) => {
             instance.patch('/users/me', userInfos)
             .then(function(response) {

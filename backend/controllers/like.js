@@ -1,10 +1,11 @@
-const Validator = require('fastest-validator');
 const models = require('../models')
 const asyncLib = require('async');
 
 const DISLIKED = 0;
 const LIKED    = 1;
 
+
+// Ajout d'un like
     function like (req, res) {
 
     let user_id = req.decodedToken.userId
@@ -106,6 +107,7 @@ const LIKED    = 1;
 
 
 
+// Suppression d'un like  
   function dislike (req, res) {
 
     let user_id = req.decodedToken.userId

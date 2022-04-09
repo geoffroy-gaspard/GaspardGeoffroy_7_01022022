@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const Validator = require('fastest-validator');
 const models = require('../models');
 
+
+// Fonction de création de compte
 function signUp(req, res) {
 
     models.User.findOne({where:{email:req.body.email}}).then(result => {
@@ -59,6 +61,8 @@ function signUp(req, res) {
     })
 }
 
+
+// Fonction de login
 function login(req, res) {
     models.User.findOne({where:{email: req.body.email}}).then(user => {
         if(user === null) {
@@ -97,12 +101,15 @@ function login(req, res) {
     });
 }
 
+// Récupération du statut d'admin d'un utilisateur
 function userInfos (req, res) {
     models.User.findOne({ where: { id: req.params.id }})
         .then(user => res.status(200).json(user.isAdmin))
         .catch(error => res.status(500).json(error))
 };
 
+
+// Liste des utilisateurs
 function allAccounts (req, res){
     models.User.findAll().then(result => {
         res.status(200).json(result);
@@ -113,6 +120,7 @@ function allAccounts (req, res){
     });
 }
 
+// Suppression d'un compte
 function deleteAccount (req, res) {
     const user_id = req.decodedToken.userId;
     models.User.findOne({ where: { id: user_id}})
@@ -135,6 +143,7 @@ function deleteAccount (req, res) {
     })
 }
 
+// Mise à jour d'un compte
 function update  (req, res) { 
     const user_id = req.decodedToken.userId;
     const updatedUser = {
@@ -157,14 +166,21 @@ function update  (req, res) {
         });
     }
 
-    models.User.findOne({ where: { id: user_id }})
-        .then(() => {
-            models.User.update(updatedUser, { where: { id: user_id }})         
-        .then(() => res.status(201).json({ message: 'Compte mis à jour avec succès',
-        user: updatedUser }))
-        .catch(error => res.status(500).json({ message: 'Un problème est survenue',
-        error: error }));
-        })
+    models.User.findOne({where:{email:req.body.email}}).then(result => {
+        if(result){
+        res.status(409).json({
+            message: "Cet email a déjà été enregistré",
+        });
+    }else{
+        models.User.findOne({ where: { id: user_id }})
+            .then(() => {
+                models.User.update(updatedUser, { where: { id: user_id }})         
+            .then(() => res.status(201).json({ message: 'Compte mis à jour avec succès',
+            user: updatedUser }))
+            .catch(error => res.status(500).json({ message: 'Un problème est survenu',
+            error: error }));
+            })
+    }})
 };
 
 module.exports = {

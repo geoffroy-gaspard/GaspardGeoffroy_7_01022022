@@ -5,8 +5,10 @@
     <h1 class="title__groupomania">Groupomania</h1>
     </div>
     <div class="title nav">
+      <!-- Bouton de modulable qui permet de naviguer les différentes pages du site -->
       <router-link class="userI" v-if="isHomePage == true" to="/Login">{{ msg }}</router-link>
       <router-link class="userI" v-else to="/">{{ msg }}</router-link>
+      <!-- Apparition du bouton déconnexion si un utilisateur est connecté -->
       <button @click="logout()" class="userI btn" v-if="$store.state.user.userId !== -1">Déconnexion</button>
     </div>
   </div>
@@ -31,6 +33,7 @@ export default {
     }
   },
   methods: {
+    // Méthode de déconnexion de l'utilisateur
     logout: function() {
             this.$store.commit('logout');
             window.location.reload()

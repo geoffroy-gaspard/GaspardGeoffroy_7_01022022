@@ -10,4 +10,5 @@ Créer un fichier .env dans le dossier backend contenant la key de token de votr
 Dans le dossier backend créer un dossier uploads
 Toujours dans le dossier backend ouvrir un terminal et executer " sequelize db:migrate " (il se peut qu'une ancienne version de node.js ne reconnaisse pas l'appel de commande sequelize, mettre à jour node.js devrait régler le problème)
 Enfin lancer le front-end avec npm run serve et le back-end avec nodemon serve (il se peut qu'une ancienne version de node.js ne reconnaisse pas l'appel de commande nodemon, mettre à jour node.js devrait régler le problème)
+Droits Administrateur Via mySQL, taper la commande suivante => UPDATE users SET isAdmin = 1 WHERE id = ❓ ; ❓ => insérer l'id de l'utilisateur concerné, l'opération peut aussi être executé via mySQL workbench
 Enjoy !

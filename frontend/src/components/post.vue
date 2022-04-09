@@ -3,6 +3,7 @@
         <div class="allPosts text-center new_post">
             <input v-model="post.title" class="form-row__input" type="text" placeholder="Titre" />
             <textarea v-model="post.content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un nouveau message" />
+            <!-- Formulaire pour un nouveau post, si une image à été uploadé est est ajoutée au formulaire un message apparait et l'option d'ajout d'image disparait -->
             <form @submit.prevent="uploadImage()" v-if="this.image_url == null">
                 <input type="file" name="filename" @change="onFileSelected($event)">
                 <button class="btn btn-secondary">Ajouter une image</button>
@@ -10,6 +11,7 @@
             <p v-else>Image Ajoutée !</p>
             <button @click="newPost()" class="btn btn-secondary">Publier un nouvel article</button>
         </div>
+        <!-- Mise en pages de tout les posts -->
         <div :key="post.id" v-for="post in posts" class="allPosts card text-center">
             <h3 class="post_card_title card-header">{{ post.title }}</h3>
             <div  v-if="post.attachment !== null" class="attachment"><img class="attachment_link" :src="'http://localhost:3000/uploads/' + post.attachment" alt="post image"></div>
@@ -23,6 +25,7 @@
                 </template>
             </comment>
             <div class="post_card_content comment_content">
+                <!-- Mise en page des commentaires de chaque post -->
                 <div :key="comment.id" v-for="comment in comments">
                     <p class="post_card_content comment__content--section" v-if="post.id == comment.post_id">{{ comment.content }}<br> posté le {{ comment.createdAt | moment("DD.MM.YY") }} à {{ comment.createdAt | moment("HH:mm")  }} de {{users[comment.user_id].first_name}} {{users[comment.user_id].last_name}}</p>
                 </div>
@@ -63,14 +66,15 @@
             }
         },
         created() {
+            // Récupération des posts
             axios
                 .get("http://localhost:3000/posts")
                 .then((res) => {
                     this.posts = res.data;
-                    console.log(this.posts);
                 });
         },
         mounted: function() {
+            // Récupération des utilisateur par leur id
             axios
                 .get('http://localhost:3000/users/me')
                 .then((res) => {
@@ -78,13 +82,12 @@
                         acc[value.id] = value
                         return acc
                     }, {});
-                    console.log(this.users[4].first_name)
-                }); 
+                });
+            // Récupération des commentaires
             axios
                 .get('http://localhost:3000/comments')
                 .then((res) => {
                     this.comments = res.data;
-                    console.log(this.comments);
                 });
             this.userId = JSON.parse(localStorage.getItem("user"));
         },
@@ -92,7 +95,9 @@
         ...mapState({ user: 'userInfos' })
         },
         methods: {
+            // Méthode de création d'un nouveau post
             newPost: function () {
+                // Si une image est attaché au post
                 if (localStorage.image_url) {
                     this.image_url = JSON.parse(localStorage.getItem("image_url"));
                     const post = {
@@ -107,6 +112,7 @@
                     console.log(error)
                 })
                 } else {
+                    // Si le post ne contient aucune image
                     const post = {
                         title: this.post.title,
                         content: this.post.content
@@ -122,6 +128,7 @@
             onFileSelected(event) {
                 this.selectedFile = event.target.files[0]
             },
+            // Méthode d'ajout d'une image à un nouveau post
             uploadImage: function () {
                 const fd = new FormData();
                 fd.append('image', this.selectedFile, this.selectedFile.name)

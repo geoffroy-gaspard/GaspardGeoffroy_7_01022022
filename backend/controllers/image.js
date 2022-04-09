@@ -1,3 +1,4 @@
+// Ajout d'une image dans le fichier uploads
 function upload (req, res) {
     if(req.file.filename) {
         res.status(201).json({

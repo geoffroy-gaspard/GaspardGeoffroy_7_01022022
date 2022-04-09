@@ -1,7 +1,9 @@
 <template>
   <div class="home">
+    <!-- Le lien du header renvoi au profil si un utilisateur est connecté sinon il renvoi à la page de connexion/inscription -->
     <headerBar v-if="this.$store.state.user.userId == -1" msg="Connexion / Inscription"/>
     <headerBar v-else msg="Mon profil"/>
+    <!-- Si un utilisateur est connecté, affichage de tout les posts. Sinon une page d'accueil est présenté -->
     <post v-if="this.$store.state.user.userId !== -1"/>
     <div class="home__page" v-else>
       <h2 class="home__page--title">Groupomania vous présente sa plateforme sociale</h2>

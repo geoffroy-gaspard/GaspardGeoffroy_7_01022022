@@ -1,6 +1,8 @@
 const Validator = require('fastest-validator');
 const models = require('../models')
 
+
+// Création de commentaire
 function save(req, res) {
     const comment = {
         content: req.body.content,
@@ -49,7 +51,7 @@ function save(req, res) {
     });
 }
 
-
+// Récupération d'un commentaire unique
 function show(req, res){
     const id = req.params.id;
 
@@ -68,7 +70,7 @@ function show(req, res){
     });
 }
 
-
+// Récupération de tout les commentaires
 function index(req, res){
     models.Comment.findAll().then(result => {
         res.status(200).json(result);
@@ -79,7 +81,7 @@ function index(req, res){
     });
 }
 
-
+// Mise à jour d'un commentaire
 function update(req, res){
     const id = req.params.id;
     const updatedComment = {
@@ -115,7 +117,7 @@ function update(req, res){
     })
 }
 
-
+// Suppression d'un commentaire
 function destroy(req, res){
     const id = req.params.id;
     const user_id = req.userData.id;

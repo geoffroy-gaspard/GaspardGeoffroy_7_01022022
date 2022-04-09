@@ -1,6 +1,7 @@
 const Validator = require('fastest-validator');
 const models = require('../models');
 
+// Création d'un nouveau post
 function save (req, res) {
     const post = {
         user_id: req.decodedToken.userId,
@@ -39,6 +40,7 @@ function save (req, res) {
     });
 }
 
+// Récupération d'un post unique
 function show (req, res) {
     const id = req.params.id;
 
@@ -57,6 +59,7 @@ function show (req, res) {
     });
 }
 
+// Récupération de tout les posts
 function index (req, res){
     models.Post.findAll().then(result => {
         res.status(200).json(result);
@@ -67,6 +70,7 @@ function index (req, res){
     });
 }
 
+// Mise à jour d'un post
 function update (req, res){
     const id = req.params.id;
     const updatedPost = {
@@ -106,6 +110,9 @@ function update (req, res){
     })
 }
 
+
+
+// Suppression d'un post
 function destroy(req, res){
     const id = req.params.id;
     models.Like.destroy({where: {post_id:id}})

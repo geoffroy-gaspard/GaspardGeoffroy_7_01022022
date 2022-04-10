@@ -3,7 +3,7 @@
         <div class="allPosts text-center new_post">
             <input v-model="post.title" class="form-row__input" type="text" placeholder="Titre" />
             <textarea v-model="post.content" class="form-row__input form-control comment-section" type="text" placeholder="Publier un nouveau message" />
-            <!-- Formulaire pour un nouveau post, si une image à été uploadé est est ajoutée au formulaire un message apparait et l'option d'ajout d'image disparait -->
+            <!-- Formulaire pour un nouveau post, si une image à été uploadé elle est ajoutée au formulaire, un message apparait et l'option d'ajout d'image disparait -->
             <form @submit.prevent="uploadImage()" v-if="this.image_url == null">
                 <input type="file" name="filename" @change="onFileSelected($event)">
                 <button class="btn btn-secondary">Ajouter une image</button>

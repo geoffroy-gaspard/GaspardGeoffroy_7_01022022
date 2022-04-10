@@ -1,5 +1,6 @@
 const Validator = require('fastest-validator');
 const models = require('../models');
+const fs = require('fs');
 
 // Création d'un nouveau post
 function save (req, res) {
@@ -119,16 +120,21 @@ function destroy(req, res){
 
     models.Comment.destroy({where: {post_id:id}})
 
-    models.Post.destroy({where: {id:id}}).then(result => {
-        res.status(200).json({
-            message: 'post supprimé avec succès'
-        });
+    models.Post.findByPk(id).then(post => {
+        const filename = post.attachment;
+        fs.unlink(`uploads/${filename}`, () => {
+        models.Post.destroy({where: {id:id}}).then(result => {
+            res.status(200).json({
+                message: 'post supprimé avec succès'
+            });
+        })
+        })
     }).catch(error => {
-        res.status(500).json({
-            message: 'Un problème est survenue',
-            error: error
+            res.status(500).json({
+                message: 'Un problème est survenue',
+                error: error
+            });
         });
-    });
 }
 
 module.exports = {

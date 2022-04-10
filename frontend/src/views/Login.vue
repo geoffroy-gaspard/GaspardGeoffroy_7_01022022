@@ -29,13 +29,13 @@
                 </div>
                 <div class="form-row login">
                     <!-- Bouton de connexion -->
-                    <button @click="login()" class="btn btn-secondary button--disabled" :class="{'button--disabled' : !validatedFields}" v-if="mode == 'login'">
+                    <button @click="login()" class="btn btn-secondary" :class="{'disabled' : !validatedFields}" v-if="mode == 'login'">
                         <!-- Message de chargement apparaissant lors de la connexion -->
                         <span v-if="status == 'loading'">Connexion en cours...</span>
                         <span v-else>Connexion</span>
                     </button>
                     <!-- Bouton de création de compte -->
-                    <button @click="signUp()" class="btn btn-secondary" :class="{'button--disabled' : !validatedFields}" v-else>
+                    <button @click="signUp()" class="btn btn-secondary" :class="{'disabled' : !validatedFields}" v-else>
                         <!-- Message de chargement apparaissant lors de la création de compte -->
                         <span v-if="status == 'loading'">Création en cours...</span>
                         <span v-else>Créer mon compte</span>

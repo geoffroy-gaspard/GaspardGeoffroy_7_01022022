@@ -126,8 +126,8 @@ function destroy(req, res){
         models.Post.destroy({where: {id:id}}).then(result => {
             res.status(200).json({
                 message: 'post supprimé avec succès'
-            });
-        })
+                });
+            })
         })
     }).catch(error => {
             res.status(500).json({

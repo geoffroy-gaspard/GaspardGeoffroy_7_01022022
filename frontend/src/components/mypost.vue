@@ -68,13 +68,7 @@
             }
         },
         created() {
-            // Récupération des posts
-            axios
-                .get("http://localhost:3000/posts")
-                .then((res) => {
-                    this.posts = res.data;
-                });
-            // Récupération des utilisateur par leur id
+            // Récupération des utilisateurs par leur id
             axios
                 .get('http://localhost:3000/users/me')
                 .then((res) => {
@@ -82,6 +76,12 @@
                         acc[value.id] = value
                         return acc
                     }, {});
+                });
+            // Récupération des posts
+            axios
+                .get("http://localhost:3000/posts")
+                .then((res) => {
+                    this.posts = res.data;
                 });
         },
         mounted: function() {
